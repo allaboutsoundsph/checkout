@@ -5,57 +5,170 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>All About Sounds.PH – Checkout</title>
   <style>
-    body { font-family: sans-serif; background: #f5f5f5; padding: 20px; }
-    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; text-align: center; }
-    label { display: block; margin: 12px 0 6px; font-weight: bold; text-align: left; }
-    input[type="text"], input[type="tel"], textarea { width: 100%; padding: 8px; box-sizing: border-box; }
-    button { margin-top: 20px; padding: 10px 15px; }
-    img { max-width: 100%; border-radius: 8px; margin-bottom: 20px; }
-    .thank-you { display: none; }
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #ffdee9, #b5fffc);
+      padding: 20px;
+    }
+    .container {
+      max-width: 550px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+    h2 { margin-bottom: 10px; }
+    p { color: #555; }
+    .progress {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+      position: relative;
+    }
+    .progress::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 4px;
+      background: #ddd;
+      z-index: 0;
+    }
+    .step {
+      background: #ddd;
+      color: #666;
+      padding: 8px 14px;
+      border-radius: 50%;
+      z-index: 1;
+      transition: 0.3s;
+    }
+    .step.active {
+      background: #ff6f61;
+      color: #fff;
+      font-weight: bold;
+    }
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: bold;
+      text-align: left;
+    }
+    input[type="text"], input[type="tel"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    textarea { resize: vertical; }
+    button {
+      background: #ff6f61;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: background 0.3s;
+    }
+    button:hover { background: #e65a4f; }
+    .hidden { display: none; }
+    .thank-you {
+      font-size: 1.2em;
+      color: #28a745;
+      font-weight: bold;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>All About Sounds.PH – Checkout</h2>
-    <img src="Minimal Square Photo Collage Photography Instagram Post.png" alt="Packages" />
-    
-    <form id="orderForm" method="POST" action="https://docs.google.com/forms/d/e/1FAIpQLSd19pHkRbB_s1WVKaMKId4pW79uSi8pWg-08QXIgw7dkCQ4Ow/formResponse" target="hidden_iframe">
+    <p>Complete your order in 2 easy steps 🎵</p>
 
-      <label>Choose Package *</label>
-      <label><input type="radio" name="entry.991224144" value="Package 1 – ₱1,500" required> Package 1 – ₱1,500</label>
-      <label><input type="radio" name="entry.991224144" value="Package 2 – ₱799"> Package 2 – ₱799</label>
-      <label><input type="radio" name="entry.991224144" value="Package 3 – ₱499"> Package 3 – ₱499</label>
-      <label><input type="radio" name="entry.991224144" value="Package 4 – ₱799"> Package 4 – ₱799</label>
+    <!-- Progress bar -->
+    <div class="progress">
+      <div class="step step1 active">1</div>
+      <div class="step step2">2</div>
+    </div>
 
-      <label>Full Name *</label>
-      <input type="text" name="entry.579742713" placeholder="Your full name" required>
+    <!-- Step 1 -->
+    <div id="step1">
+      <h3>Step 1: Choose Package</h3>
+      <form id="packageForm">
+        <label><input type="radio" name="entry.991224144" value="Package 1 – ₱1,500" required> Package 1 – ₱1,500</label>
+        <label><input type="radio" name="entry.991224144" value="Package 2 – ₱2,500"> Package 2 – ₱2,500</label>
+        <label><input type="radio" name="entry.991224144" value="Package 3 – ₱3,500"> Package 3 – ₱3,500</label>
+        <label><input type="radio" name="entry.991224144" value="Package 4 – ₱5,000"> Package 4 – ₱5,000</label>
+        <button type="button" onclick="goToStep2()">Next</button>
+      </form>
+    </div>
 
-      <label>Contact Number *</label>
-      <input type="tel" name="entry.1134943787" placeholder="09XXXXXXXXX" pattern="^09\d{9}$" required>
+    <!-- Step 2 -->
+    <div id="step2" class="hidden">
+      <h3>Step 2: Fill in Your Details</h3>
+      <form id="checkoutForm" method="POST" action="https://docs.google.com/forms/d/e/1FAIpQLSd19pHkRbB_s1WVKaMKId4pW79uSi8pWg-08QXIgw7dkCQ4Ow/formResponse" target="hidden_iframe" onsubmit="showThankYou()">
+        
+        <input type="hidden" name="entry.991224144" id="selectedPackage">
 
-      <label>Complete Address *</label>
-      <textarea name="entry.376477499" placeholder="Street, Barangay, City/Province" required></textarea>
+        <label>Full Name *</label>
+        <input type="text" name="entry.579742713" placeholder="Your full name" required>
 
-      <label>Nearest Landmark *</label>
-      <input type="text" name="entry.363529948" placeholder="e.g., Beside the barangay hall" required>
+        <label>Contact Number *</label>
+        <input type="tel" name="entry.1134943787" placeholder="09XXXXXXXXX" pattern="^09\d{9}$" required>
 
-      <button type="submit">Submit</button>
-    </form>
+        <label>Complete Address *</label>
+        <textarea name="entry.376477499" placeholder="Street, Barangay, City/Province" required></textarea>
 
-    <div class="thank-you">
+        <label>Nearest Landmark *</label>
+        <input type="text" name="entry.363529948" placeholder="e.g., Beside the barangay hall" required>
+
+        <button type="submit">Submit Order</button>
+        <br>
+        <button type="button" onclick="backToStep1()">← Back</button>
+      </form>
+    </div>
+
+    <!-- Thank You -->
+    <div id="thankYou" class="hidden">
       <h3>🎉 Thank you for your order!</h3>
-      <p>We have received your details. Our team will contact you soon for confirmation.</p>
+      <p class="thank-you">We’ll contact you soon.</p>
+      <p>Redirecting you to our Facebook page...</p>
     </div>
 
     <iframe name="hidden_iframe" style="display:none;"></iframe>
   </div>
 
   <script>
-    const form = document.getElementById('orderForm');
-    form.addEventListener('submit', function() {
-      form.style.display = 'none';
-      document.querySelector('.thank-you').style.display = 'block';
-    });
+    function goToStep2() {
+      const selected = document.querySelector('input[name="entry.991224144"]:checked');
+      if (!selected) {
+        alert("Please select a package first!");
+        return;
+      }
+      document.getElementById("selectedPackage").value = selected.value;
+      document.getElementById("step1").classList.add("hidden");
+      document.getElementById("step2").classList.remove("hidden");
+      document.querySelector(".step1").classList.remove("active");
+      document.querySelector(".step2").classList.add("active");
+    }
+    function backToStep1() {
+      document.getElementById("step2").classList.add("hidden");
+      document.getElementById("step1").classList.remove("hidden");
+      document.querySelector(".step2").classList.remove("active");
+      document.querySelector(".step1").classList.add("active");
+    }
+    function showThankYou() {
+      document.getElementById("step2").classList.add("hidden");
+      document.getElementById("thankYou").classList.remove("hidden");
+      // Redirect to Facebook after 3 seconds
+      setTimeout(() => {
+        window.location.href = "https://www.facebook.com/allaboutsoundsphmain";
+      }, 3000);
+    }
   </script>
 </body>
 </html>
